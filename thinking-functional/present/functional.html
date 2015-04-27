@@ -10,23 +10,25 @@
 <meta name="author" content="David Buschman">
 
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-status-bar-style"
+	content="black-translucent" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
 <link rel="stylesheet" href="reveal3/css/reveal.css">
-<link rel="stylesheet" href="/reveal3/css/theme/moon.css" id="theme">
+<link rel="stylesheet" href="reveal3/css/theme/moon.css" id="theme">
 
 <!-- Code syntax highlighting -->
-<link rel="stylesheet" href="/reveal3/lib/css/zenburn.css">
+<link rel="stylesheet" href="reveal3/lib/css/zenburn.css">
 
 <!-- Printing and PDF exports -->
 <script>
 	var link = document.createElement('link');
 	link.rel = 'stylesheet';
 	link.type = 'text/css';
-	link.href = window.location.search.match(/print-pdf/gi) ? '/reveal3/css/print/pdf.css'
-			: '/reveal3/css/print/paper.css';
+	link.href = window.location.search.match(/print-pdf/gi) ? 'reveal3/css/print/pdf.css'
+			: 'reveal3/css/print/paper.css';
 	document.getElementsByTagName('head')[0].appendChild(link);
 </script>
 
@@ -43,25 +45,22 @@
 		<!-- Any section element inside of this container is displayed as a slide -->
 		<div class="slides">
 			<section>
-				<h3>&nbsp;</h3>
-				<h2>Functioanl Thinking</h2>
-				<p>&nbsp;</p>
+				<h1>Functional Thinking</h1>
 				<h3>Denver Scala User Group</h3>
 				<p>David Buschman</p>
 				<p>May 5th, 2015</p>
 				<p>Github - dbuschman7</p>
 				<p>&nbsp;</p>
-				<p>https://github.com/dbuschman7/dsug-ligntining-talks/thinking-functional</p>
+				<p>https://github.com/dbuschman7/<br/>dsug-lightning-talks/thinking-functional</p>
 			</section>
 
 			<section id="fragments">
 				<h2>Presentation Outline</h2>
-				<p>&nbsp;</p>
 				<ul>
-					<li class="fragment ">Look at a problem to sovle</li>
+					<li class="fragment ">Look at a problem to solve</li>
 					<li class="fragment ">Code it imperative</li>
-					<li class="fragment ">Discuss immutablility</li>
-					<li class="fragment ">Migrate the solution to functional and immutablity</li>
+					<li class="fragment ">Discuss immutability</li>
+					<li class="fragment ">Migrate the solution to be more functional</li>
 				</ul>
 			</section>
 
@@ -70,255 +69,147 @@
 			<!-- *********************************** -->
 			<section>
 				<section>
-					<h2>What is Spark?</h2>
-					<p class="fragment">Apache Spark is a fast and general-purpose cluster computing system.</p>
-					<img class="fragment" src="/assets/images/spark-topology.png" alt="breaker">
-				</section>
-				<section>
-					<h2>Resilient Distributed Dataset (RDD)</h2>
+					<h2>The problem</h2>
 					<ul>
-						<li class="fragment">Spark’s primary abstraction</li>
-						<li class="fragment">Distributed collection of items</li>
-						<li class="fragment">created from any storage source supported by Hadoop</li>
-						<li class="fragment">including local file system, HDFS,</li>
-						<li class="fragment">Cassandra, HBase, Amazon S3, etc.</li>
-						<li class="fragment">or by transforming other RDDs (secret sauce)</li>
-						<li class="fragment">Executed lazily, output operations cause execution</li>
+						<li>Give a list of numbers</li>
+						<li>Split into two collections of even and odd numbers</li>
+						<li class="fragment">Input: 
+<span class=" stretch"><pre><code class=" scala">val fibs = Seq(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,  
+    233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946,  
+    17711, 28657, 46368, 75025, 121393, 196418, 317811)
+</code></pre></span>
+						</li>
+						<li class="fragment">Output: 
+<span class=" stretch"><pre><code class=" scala">Evens(10) - List(0, 2, 8, 34, 144, 610, 2584, 10946, 
+                  46368, 196418)
+                  
+Odds(19)   - List(1, 1, 3, 5, 13, 21, 55, 89, 233, 377, 
+                  987, 1597, 4181, 6765, 17711, 28657,  
+                  75025, 121393, 317811)
+</code></pre></span>
+
+						</li>
 					</ul>
 				</section>
 				<section>
-					<h2>Spark Architecture</h2>
-					<img class="fragment" src="/assets/images/Spark-2015-Vision.jpg" alt="breaker">
+					<h2>Imperative Solution</h2>
+					<ul>
+						<li class="fragment">Create output collections</li>
+						<li class="fragment">loop over the input</li>					
+						<li class="fragment">   filter the output</li>
+						<li class="fragment">return the output</li>
+					</ul>							
+<span class="fragment stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
+val odds = new ArrayList[Integer]()
+for (i <- 0 until fibs.length) {
+  val cur = fibs(i)
+  if (cur % 2 == 0) evens.add(cur)
+  else odds.add(cur)
+}
+</code></pre></span>					
 				</section>
+
 			</section>
 			<section>
-				<section>
-					<h2>Spark Streaming - DStreams</h2>
-					<ul>
-						<li class="fragment ">Scalable, Fault Tolerant stream processing</li>
-						<li class="fragment ">Micro-Batches and not per-event streaming ( Storm )</li>
-						<li class="fragment ">Data provided in specified duration intervals</li>
-					</ul>
-					<img class="fragment" style="background-color: #FFF;" src="/assets/images/streaming-dstream-ops.png" alt="breaker">
-				</section>
-				<section>
-					<h2>Spark Streaming - Diagram</h2>
-					<img class="fragment" style="background-color: #FFF;" src="/assets/images/spark-streaming.png" alt="breaker">
-					<ul>
-						<li class="fragment ">Scalable, Fault Tolerant stream processing</li>
-						<li class="fragment ">High Level API - joins, windows, 5x less code</li>
-						<li class="fragment ">Fault Tolerant - exactly once semantics (*)</li>
-						<li class="fragment ">Integration - SQL, DataFrames, MLib, GraphX</li>
-					</ul>
-				</section>
-				<section>
-					<h2>Spark Streaming - Windowing</h2>
-					<img class="fragment" style="background-color: #FFF;" src="/assets/images/streaming-dstream-window.png" alt="breaker">
-					<ul>
-						<li class="fragment ">Window Operations are configurable</li>
-						<li class="fragment ">windowDuration - length on the window</li>
-						<li class="fragment ">slideDuration - amount to slide the window for each pass</li>
-						<li class="fragment">Durations be greater then DStream duration interval</li>
-					</ul>
-				</section>
-				<section>
-					<h2>Spark Streaming - Message Semantics</h2>
-					<ul>
-						<li class="fragment "><strong>At-Most Once</strong> - where each message is delivered once or never</li>
-						<li class="fragment "><strong>At-least Once</strong> - where each message is certain to be delivered, but may do so
-							multiple times</li>
-						<li class="fragment "><strong>Exactly Once</strong> - where the message will always certainly arrive and do so only
-							once</li>
-						<li class="fragment">It depends on your data-source, check there</li>
-						<li class="fragment">Its a very important decision for any messaging driven system</li>
-					</ul>
-				</section>
-				<section>
-					<h2>What about Storm?</h2>
-					<ul>
-						<li class="fragment">Per event processing only</li>
-						<li class="fragment">Pure streams abstraction</li>
-						<li class="fragment">Low level API</li>
-						<li class="fragment">Write your own plumbing (joins, filters, tees)</li>
-						<li class="fragment">Use what fits your needs best</li>
-						<li class="fragment">Religious war is brewing</li>
-					</ul>
-				</section>
-			</section>
 
-
-			<!-- *********************************** -->
-			<!-- **** Lookup and stream a file  **** -->
-			<!-- *********************************** -->
-			<section>
 				<section>
-					<h2>Demo App - Dependencies</h2>
+					<h2>Immutable objects</h2>
 					<ul>
-						<li>Log Aggregation Example base code</li>
-						<li>Authors - Frederic Dang Ngoc and Francois Dang Ngoc</li>
-						<li><a href="http://chimpler.wordpress.com/2014/07/01/implementing-a-real-time-data-pipeline-with-spark-streaming/">http://chimpler.wordpress.com/2014/07/01/implementing-a-real-time-data-pipeline-with-spark-streaming/</a></li>
-						<li>Kafka 0.8.2.0</li>
-						<li>MongoDB 2.6.1 - ReactiveMongo - 0.10.5.0.akka23</li>
-						<li>Play 2.3.7 - PlayJson, Akka</li>
-						<li>Scala 2.10.x</li>
-						<li>AngularJS - 1.2.23</li>
-						<li>Bootstrap - 3.2.0</li>
+						<li class="fragment ">thread-safe, no synchronization issues</li>
+						<li class="fragment ">make good keys for caches and maps</li>
+						<li class="fragment ">can be cached directly</li>
+						<li class="fragment ">easier to write, use and reason about the code</li>
+						<li class="fragment ">easier to parallelize your program</li>
+						<li class="fragment ">internal state of your program will be consistent<br/>even if you have exceptions</li>
+						<li class="fragment ">No side effects</li>
 					</ul>
 				</section>
 				<section>
-					<h2>Demo App - Application Diagram</h2>
-					<img style="background-color: #FFF;" src="/assets/images/app-diagram.png" alt="breaker">
-				</section>
-				<section>
-					<h2>Demo App - Log Generator</h2>
-					<span class="stretch"> <pre>
-							<code class=" scala">val NumPublishers = 5
-val NumAdvertisers = 3
-val Publishers = (0 to NumPublishers).map("publisher_" +)
-val Advertisers = (0 to NumAdvertisers).map("advertiser_" +)
-val UnknownGeo = "unknown"
-val Geos = Seq("NY", "CA", "FL", "CO", "HI", UnknownGeo)
-val NumWebsites = 10000
-val NumCookies = 10000
-val LogGeneratorDelay = 10 milliseconds
-							
-def receive = {
-  case Tick => {
-   ...
-    val log = ImpressionLog(timestamp, publisher, advertiser, website, geo, bid, cookie)
-    val payload: String = ImpressionLog.toJson(log).toString()
-    Kafka.producer.send(new KeyedMessage[String, String](Config.KafkaTopic, payload))
+					<h2>Lets Go Scala</h2>
+					<ul>
+						<li class="fragment">Case matching is more powerful in Scala</li>
+					</ul>
+<span class="fragment stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
+val odds = new ArrayList[Integer]()
+for (i <- 0 until fibs.length) {
+  val cur = fibs(i)
+  if (cur % 2 == 0) evens.add(cur)
+  else odds.add(cur)
+}</code></pre></span>					
+<span class="fragment stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
+val odds = new ArrayList[Integer]()
+for (cur <- fibs) {
+  (cur % 2) match {
+    case 0 => evens.add(cur)
+    case _ => odds.add(cur)
   }
-}</code>
-						</pre></span>
+}</code></pre></span>					
 				</section>
 				<section>
-					<h2>Demo App - Start the Stream</h2>
-					<span class="stretch"> <pre>
-							<code class=" scala">lazy val streamingContext = new StreamingContext(sparkContext, Seconds(1))
-
-lazy val messages = KafkaUtils.createStream[String, String, StringDecoder, StringDecoder]
-	 (streamingContext, zkParams, topic, StorageLevel.MEMORY_AND_DISK)
-
-lazy val hyperLogLog = new HyperLogLogMonoid(12) // to count uniques
-
-lazy val windowStream = messages // Seq(String, String)
-  .map(raw => ImpressionLog.fromJson(raw._2)) // Seq(ImpressionLog)
-  .filter(_.geo != Config.UnknownGeo) // Seq(ImpressionLog)
-  .map { log =>
-    val key = PublisherGeoKey(log.publisher, log.geo)
-    val agg = AggregationLog(log.timestamp, log.bid, 1, 
-                  hyperLogLog(log.cookie.getBytes(Charsets.UTF_8)))
-    (key, agg)
-  } // Seq[(PublisherGeoKey,AggregationLog)]
-</code>
-						</pre></span>
-				</section>
-				<section>
-					<h2>Demo App - Aggregation</h2>
-					<span class="stretch"><pre>
-							<code class=" scala">def reduceAggregationLogs(aggLog1: AggregationLog, aggLog2: AggregationLog) = {
-  aggLog1.copy(
-    timestamp = math.min(aggLog1.timestamp, aggLog2.timestamp),
-    sumBids = aggLog1.sumBids + aggLog2.sumBids,
-    imps = aggLog1.imps + aggLog2.imps,
-    uniquesHll = aggLog1.uniquesHll + aggLog2.uniquesHll)
-}
-
-lazy val byWindowAggreation:DStream[(PublisherGeoKey, AggregationLog)] 
-  = windowStream.reduceByKeyAndWindow(reduceAggregationLogs, Seconds(1))
-
-uiStream.aggregateWindowStream(byWindowAggreation)
-mongoDbStream.aggregateWindowStream(byWindowAggreation)
-
-</code>
-						</pre></span>
-				</section>
-				<section>
-					<h2>Demo App - Streaming UI</h2>
-					<span class="stretch"> <pre>
-							<code class=" scala">class StreamToUI {
-  def aggregateWindowStream(stream: DStream[(PublisherGeoKey, AggregationLog)]): Unit = {
-    // already aggregated to 1 second windows
-    stream.foreachRDD { logRdd: RDD[(PublisherGeoKey, AggregationLog)] =>
-      val logs = logRdd.map {
-        case (PublisherGeoKey(pub, geo), AggregationLog(timestamp, sumBids, imps, uniquesHll)) =>
-          AggregationResult(new DateTime(timestamp), pub, geo, imps, 
-                 uniquesHll.estimatedSize.toInt, sumBids / imps)
-      }.collect() // output operation
-
-      Actors.statistics ! Batch(logs)
-    }
+					<h2>Immutable Collections</h2>
+<span class=" stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
+val odds = new ArrayList[Integer]()
+for (cur <- fibs) {
+  (cur % 2) match {
+    case 0 => evens.add(cur)
+    case _ => odds.add(cur)
   }
-}
-</code>
-						</pre></span>
-				</section>
-				<section>
-					<h2>Demo App - Persistence</h2>
-					<span class="stretch"> <pre>
-							<code class=" scala">stream.foreachRDD({ logRdd: RDD[(PublisherGeoKey, AggregationLog)] =>
-  val logs = logRdd.map {
-    case (PublisherGeoKey(pub, geo), AggregationLog(timestamp, sumBids, imps, uniquesHll)) =>
-      AggregationResult(new DateTime(timestamp), pub, geo, imps, uniquesHll.estimatedSize.toInt, sumBids / imps)
-  }.collect() // output operation
-
-  lazy val coll = ConnectionPool.checkout 
-  logs.foreach { log => coll.save(log) }
-  ConnectionPool.release(coll)
-
-  ConnectionPool.release(logs.foldLeft(ConnectionPool.checkout) {
-    (coll, log) => { coll.save(log); coll }
-  })
-})
-</code>
-						</pre></span>
-				</section>
-				<section>
-					<h2>Demo App - Streaming MongoDB</h2>
-					<span class="stretch"> <pre>
-							<code class=" scala">class StreamToMongoDB(window: Duration) {
-  def aggregateWindowStream(stream: DStream[(PublisherGeoKey, AggregationLog)]): Unit = {
-    val aggLogs = stream.reduceByKeyAndWindow(SparkStreaming.reduceAggregationLogs _, window, window)
-    aggLogs.foreachRDD(rdd => {
-      rdd.foreachPartition(logs => {
-        val coll = ConnectionPool.checkout //static, lazily initialized pool of connections
-        logs.foreach { record =>
-          val key = record._1
-          val log = record._2
-          val result = AggregationResult(new DateTime(log.timestamp), key.publisher, key.geo, //
-            log.imps, log.uniquesHll.estimatedSize.toInt, log.sumBids / log.imps)
-          coll.save(result)
-        }
-        Actors.statistics ! Counts("mongoCount", count)
-        ConnectionPool.release(coll) // return to the pool for future reuse
-      })
-    })
+}</code></pre></span>	
+<span class="fragment stretch"><pre><code class=" scala">var evens = Seq[Int]()
+var odds = Seq[Int]()
+for (cur <- fibs) {
+  (cur % 2) match {
+    case 0 => evens = evens :+ cur
+    case _ => odds = odds :+ cur
   }
-}</code>
-						</pre></span>
-				</section>
-
+}</code></pre></span>					
+				</section>		
 				<section>
-					<h2>Demo App - Ready, Set, Go!</h2>
-					<span class="stretch"> <pre>
-							<code class=" scala">streamingContext.start()
-</code>
-						</pre></span>
-					<ul>
-						<li>You must call this to start eveything</li>
-						<li class="fragment">Do NOT forget to call this method!</li>
-						<li class="fragment">Nothing will flow in until called</li>
-						<li class="fragment">The stream topology is immutable once called</li>
-						<li class="fragment">You can only have 1 Spark/Streaming context per JVM</li>
-					</ul>
-				</section>
+					<h2>Functional Way - FoldLeft</h2>
+<span class=" stretch"><pre><code class=" scala">var evens = Seq[Int]()
+var odds = Seq[Int]()
+for (cur <- fibs) {
+  (cur % 2) match {
+    case 0 => evens = evens :+ cur
+    case _ => odds = odds :+ cur
+  }
+}</code></pre></span>					
+<span class="fragment stretch"><pre><code class=" scala">val initial = (Seq[Int](), Seq[Int]())
+
+val (evens, odds) = fibs.foldLeft(initial) { (total, cur) =>
+
+  val evens = total._1
+  val odds = total._2
+
+  (cur % 2) match {
+    case 0 => (evens :+ cur, odds)
+    case _ => (evens, odds :+ cur)
+  }
+}</code></pre></span>	
+				</section>	
+				<section>
+					<h2>Start to Finish</h2>
+<span class=" stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
+val odds = new ArrayList[Integer]()
+for (i <- 0 until fibs.length) {
+  val cur = fibs(i)
+  if (cur % 2 == 0) evens.add(cur)
+  else odds.add(cur)
+}</code></pre></span>					
+<span class="fragment stretch"><pre><code class=" scala">val initial = (Seq[Int](), Seq[Int]())
+val (evens, odds) = fibs.foldLeft(initial) { (total, cur) =>
+  (cur % 2) match {
+    case 0 => (total._1 :+ cur, total._2)
+    case _ => (total._1, total._2 :+ cur)
+  }
+}</code></pre></span>	
+				</section>											
 			</section>
 		</div>
 	</div>
 
-	<script src="/assets/reveal3/lib/js/head.min.js"></script>
-	<script src="/assets/reveal3/js/reveal.js"></script>
+	<script src="reveal3/lib/js/head.min.js"></script>
+	<script src="reveal3/js/reveal.js"></script>
 
 	<script>
 		// Full list of configuration options available at:
@@ -333,22 +224,22 @@ mongoDbStream.aggregateWindowStream(byWindowAggreation)
 
 			// Optional reveal.js plugins
 			dependencies : [ {
-				src : '/assets/reveal3/lib/js/classList.js',
+				src : 'reveal3/lib/js/classList.js',
 				condition : function() {
 					return !document.body.classList;
 				}
 			}, {
-				src : '/assets/reveal3/plugin/markdown/marked.js',
+				src : 'reveal3/plugin/markdown/marked.js',
 				condition : function() {
 					return !!document.querySelector('[data-markdown]');
 				}
 			}, {
-				src : '/assets/reveal3/plugin/markdown/markdown.js',
+				src : 'reveal3/plugin/markdown/markdown.js',
 				condition : function() {
 					return !!document.querySelector('[data-markdown]');
 				}
 			}, {
-				src : '/assets/reveal3/plugin/highlight/highlight.js',
+				src : 'reveal3/plugin/highlight/highlight.js',
 				async : true,
 				condition : function() {
 					return !!document.querySelector('pre code');
@@ -357,10 +248,10 @@ mongoDbStream.aggregateWindowStream(byWindowAggreation)
 					hljs.initHighlightingOnLoad();
 				}
 			}, {
-				src : '/assets/reveal3/plugin/zoom-js/zoom.js',
+				src : 'reveal3/plugin/zoom-js/zoom.js',
 				async : true
 			}, {
-				src : '/assets/reveal3/plugin/notes/notes.js',
+				src : 'reveal3/plugin/notes/notes.js',
 				async : true
 			} ]
 		});
