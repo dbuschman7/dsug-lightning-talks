@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+
+<title>What is Scala</title>
+
+<meta name="description" content="What is Scala">
+<meta name="author" content="David Buschman">
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+<link rel="stylesheet" href="reveal3/css/reveal.css">
+<link rel="stylesheet" href="reveal3/css/theme/moon.css" id="theme">
+
+<!-- Code syntax highlighting -->
+<link rel="stylesheet" href="reveal3/lib/css/zenburn.css">
+
+<!-- Printing and PDF exports -->
+<script>
+	var link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.type = 'text/css';
+	link.href = window.location.search.match(/print-pdf/gi) ? 'reveal3/css/print/pdf.css'
+			: 'reveal3/css/print/paper.css';
+	document.getElementsByTagName('head')[0].appendChild(link);
+</script>
+
+<!--[if lt IE 9]>
+		<script src="/reveal3/lib/js/html5shiv.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+	<div class="reveal">
+		<!-- Any section element inside of this container is displayed as a slide -->
+		<div class="slides">
+			<section>
+				<h1>What is Scala</h1>
+				<h3>Denver Scala User Group</h3>
+				<p>David Buschman</p>
+				<p>May 5th, 2015</p>
+				<p>Github - dbuschman7</p>
+				<p>&nbsp;</p>
+				<p>
+					https://github.com/dbuschman7/<br />dsug-lightning-talks/what-is-scala
+				</p>
+			</section>
+			<section>
+				<h2>What is Scala</h2>
+				<ul>
+					<li class="fragment">acronym for “Scalable Language”</li>
+					<li class="fragment">It can grow with you</li>
+					<li class="fragment">Can rely on it for large mission critical systems</li>
+					<li class="fragment">syntax is concise and low ceremony</li>
+					<li class="fragment">the compiler can infer types for you</li>
+					<li class="fragment">It is a pure-bred object-oriented language.</li>
+					<li class="fragment">It is also a full-blown functional language</li>
+				</ul>
+			</section>
+			<section>
+				<h2>Object Oriented</h2>
+				<ul>
+					<li class="fragment">pure-bred object-oriented language</li>
+					<li class="fragment">every value is an object</li>
+					<li class="fragment">every operation is a method-call</li>
+					<li class="fragment">advanced architectures through classes and traits</li>
+					<li class="fragment">many design patterns are already natively supported</li>
+					<li class="fragment">add new operations to existing classes, called pimping</li>
+					<li class="fragment">implicits allow code help without getting in the way</li>
+				</ul>
+			</section>
+			<section>
+				<h2>Functional</h2>
+				<ul>
+					<li class="fragment ">full-blown functional language</li>
+					<li class="fragment ">syntax is fairly conventional</li>
+					<li class="fragment ">first-class functions</li>
+					<li class="fragment ">library with efficient immutable data structures</li>
+					<li class="fragment ">a general preference of immutability over mutation</li>
+					<li class="fragment ">a gradual, easy migration to a more functional style</li>
+					<li class="fragment ">use it as a “Java without semicolons”</li>
+					<li class="fragment ">gradually eliminate mutable state in your applications</li>
+					<li class="fragment ">Scala is not opinionated, use it with any style you prefer</li>
+				</ul>
+			</section>
+			<section>
+				<h2>Seamless Java Interop</h2>
+				<ul>
+					<li class="fragment ">runs on the JVM</li>
+					<li class="fragment ">Java and Scala classes can be freely mixed</li>
+					<li class="fragment ">the Scala compiler contains a subset of a Java compiler</li>
+					<li class="fragment">Case matching is more powerful in Scala</li>
+					<li class="fragment ">All Java libraries are available</li>
+					<li class="fragment ">Build tools like ant or maven</li>
+					<li class="fragment ">IDEs like Eclipse, IntelliJ, or Netbeans</li>
+					<li class="fragment ">Akka, Finagle, and the Play web framework include dual APIs</li>
+				</ul>
+			</section>
+			<section>
+				<h2>Functions are Objects</h2>
+				<ul>
+					<li class="fragment ">Scala’s approach is to develop a small set of core constructs that can be combined in flexible ways.</li>
+					<li class="fragment ">This applies also to its object-oriented and functional natures.</li>
+					<li class="fragment ">Functional and Object-oriented are unified to a degree</li>
+					<li class="fragment ">The function type is just a regular class.</li>
+					<li class="fragment ">Algebraic data types found are modelled in Scala as class hierarchies</li>
+					<li class="fragment ">Pattern matching is possible over arbitrary classes</li>
+				</ul>
+			</section>
+			<section>
+				<h2>Future Proof</h2>
+				<ul>
+					<li class="fragment ">shines when it comes to scalable server software</li>
+					<li class="fragment ">makes use of concurrent and synchronous processing</li>
+					<li class="fragment ">parallel utilization of multiple cores and distributed processing</li>
+					<li class="fragment ">Its functional nature makes it easier to write safe multi-threaded code</li>
+					<li class="fragment ">typically less reliance on mutable state</li>
+					<li class="fragment ">provides powerful tools for organizing concurrent systems</li>
+				</ul>
+			</section>
+		</div>
+	</div>
+
+	<script src="reveal3/lib/js/head.min.js"></script>
+	<script src="reveal3/js/reveal.js"></script>
+
+	<script>
+		// Full list of configuration options available at:
+		// https://github.com/hakimel/reveal.js#configuration
+		Reveal.initialize({
+			controls : true,
+			progress : true,
+			history : true,
+			center : true,
+
+			transition : 'slide', // none/fade/slide/convex/concave/zoom
+
+			// Optional reveal.js plugins
+			dependencies : [ {
+				src : 'reveal3/lib/js/classList.js',
+				condition : function() {
+					return !document.body.classList;
+				}
+			}, {
+				src : 'reveal3/plugin/markdown/marked.js',
+				condition : function() {
+					return !!document.querySelector('[data-markdown]');
+				}
+			}, {
+				src : 'reveal3/plugin/markdown/markdown.js',
+				condition : function() {
+					return !!document.querySelector('[data-markdown]');
+				}
+			}, {
+				src : 'reveal3/plugin/highlight/highlight.js',
+				async : true,
+				condition : function() {
+					return !!document.querySelector('pre code');
+				},
+				callback : function() {
+					hljs.initHighlightingOnLoad();
+				}
+			}, {
+				src : 'reveal3/plugin/zoom-js/zoom.js',
+				async : true
+			}, {
+				src : 'reveal3/plugin/notes/notes.js',
+				async : true
+			} ]
+		});
+	</script>
+
+</body>
+</html>
