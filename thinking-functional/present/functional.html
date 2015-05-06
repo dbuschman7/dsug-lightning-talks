@@ -2,111 +2,111 @@
 <html lang="en">
 
 <head>
-<meta charset="utf-8">
+	<meta charset="utf-8">
 
-<title>Functional Thinking</title>
+	<title>Functional Thinking</title>
 
-<meta name="description" content="Functional Thinking">
-<meta name="author" content="David Buschman">
+	<meta name="description" content="Functional Thinking">
+	<meta name="author" content="David Buschman">
 
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style"
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style"
 	content="black-translucent" />
 
-<meta name="viewport"
+	<meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
-<link rel="stylesheet" href="reveal3/css/reveal.css">
-<link rel="stylesheet" href="reveal3/css/theme/moon.css" id="theme">
+	<link rel="stylesheet" href="reveal3/css/reveal.css">
+	<link rel="stylesheet" href="reveal3/css/theme/moon.css" id="theme">
 
-<!-- Code syntax highlighting -->
-<link rel="stylesheet" href="reveal3/lib/css/zenburn.css">
+	<!-- Code syntax highlighting -->
+	<link rel="stylesheet" href="reveal3/lib/css/zenburn.css">
 
-<!-- Printing and PDF exports -->
-<script>
+	<!-- Printing and PDF exports -->
+	<script>
 	var link = document.createElement('link');
 	link.rel = 'stylesheet';
 	link.type = 'text/css';
 	link.href = window.location.search.match(/print-pdf/gi) ? 'reveal3/css/print/pdf.css'
-			: 'reveal3/css/print/paper.css';
+	: 'reveal3/css/print/paper.css';
 	document.getElementsByTagName('head')[0].appendChild(link);
-</script>
+	</script>
 
 <!--[if lt IE 9]>
 		<script src="/reveal3/lib/js/html5shiv.js"></script>
 		<![endif]-->
-</head>
+	</head>
 
-<body>
+	<body>
 
-	<div class="reveal">
+		<div class="reveal">
 
 
-		<!-- Any section element inside of this container is displayed as a slide -->
-		<div class="slides">
-			<section>
-				<h1>Functional Thinking</h1>
-				<h3>Denver Scala User Group</h3>
-				<p>David Buschman</p>
-				<p>May 5th, 2015</p>
-				<p>Github - dbuschman7</p>
-				<p>&nbsp;</p>
-				<p>https://github.com/dbuschman7/<br/>dsug-lightning-talks/thinking-functional</p>
-			</section>
-
-			<section id="fragments">
-				<h2>Presentation Outline</h2>
-				<ul>
-					<li class="fragment ">Look at a problem to solve</li>
-					<li class="fragment ">Code it imperative</li>
-					<li class="fragment ">Discuss immutability</li>
-					<li class="fragment ">Migrate the solution to be more functional</li>
-				</ul>
-			</section>
-
-			<!-- *********************************** -->
-			<!-- **** Summary and Motivation    **** -->
-			<!-- *********************************** -->
-			<section>
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
 				<section>
-					<h2>The problem</h2>
-					<ul>
-						<li>Give a list of numbers</li>
-						<li>Split into two collections of even and odd numbers</li>
-						<li class="fragment">Input: 
-<span class=" stretch"><pre><code class=" scala">val fibs = Seq(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,  
-    233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946,  
-    17711, 28657, 46368, 75025, 121393, 196418, 317811)
-</code></pre></span>
-						</li>
-						<li class="fragment">Output: 
-<span class=" stretch"><pre><code class=" scala">Evens(10) - List(0, 2, 8, 34, 144, 610, 2584, 10946, 
-                  46368, 196418)
-                  
-Odds(19)   - List(1, 1, 3, 5, 13, 21, 55, 89, 233, 377, 
-                  987, 1597, 4181, 6765, 17711, 28657,  
-                  75025, 121393, 317811)
-</code></pre></span>
+					<h1>Functional Thinking</h1>
+					<h3>Denver Scala User Group</h3>
+					<p>David Buschman</p>
+					<p>May 5th, 2015</p>
+					<p>Github - dbuschman7</p>
+					<p>&nbsp;</p>
+					<p>https://github.com/dbuschman7/<br/>dsug-lightning-talks/thinking-functional</p>
+				</section>
 
-						</li>
+				<section id="fragments">
+					<h2>Presentation Outline</h2>
+					<ul>
+						<li class="fragment ">Look at a problem to solve</li>
+						<li class="fragment ">Code it imperative</li>
+						<li class="fragment ">Discuss immutability</li>
+						<li class="fragment ">Migrate the solution to be more functional</li>
 					</ul>
 				</section>
+
+				<!-- *********************************** -->
+				<!-- **** Summary and Motivation    **** -->
+				<!-- *********************************** -->
 				<section>
-					<h2>Imperative Solution</h2>
-					<ul>
-						<li class="fragment">Create output collections</li>
-						<li class="fragment">loop over the input</li>					
-						<li class="fragment">   filter the output</li>
-						<li class="fragment">return the output</li>
-					</ul>							
-<span class="fragment stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
-val odds = new ArrayList[Integer]()
-for (i <- 0 until fibs.length) {
-  val cur = fibs(i)
-  if (cur % 2 == 0) evens.add(cur)
-  else odds.add(cur)
-}
-</code></pre></span>					
+					<section>
+						<h2>The problem</h2>
+						<ul>
+							<li>Give a list of numbers</li>
+							<li>Split into two collections of even and odd numbers</li>
+							<li class="fragment">Input: 
+								<span class=" stretch"><pre><code class=" scala">val fibs = Seq(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,  
+									233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946,  
+									17711, 28657, 46368, 75025, 121393, 196418, 317811)
+								</code></pre></span>
+							</li>
+							<li class="fragment">Output: 
+								<span class=" stretch"><pre><code class=" scala">Evens(10) - List(0, 2, 8, 34, 144, 610, 2584, 10946, 
+									46368, 196418)
+
+									Odds(19)   - List(1, 1, 3, 5, 13, 21, 55, 89, 233, 377, 
+									987, 1597, 4181, 6765, 17711, 28657,  
+									75025, 121393, 317811)
+								</code></pre></span>
+
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Imperative Solution</h2>
+						<ul>
+							<li class="fragment">Create output collections</li>
+							<li class="fragment">loop over the input</li>					
+							<li class="fragment">   filter the output</li>
+							<li class="fragment">return the output</li>
+						</ul>							
+						<span class="fragment stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
+							val odds = new ArrayList[Integer]()
+							for (i <- 0 until fibs.length) {
+							val cur = fibs(i)
+							if (cur % 2 == 0) evens.add(cur)
+							else odds.add(cur)
+						}
+					</code></pre></span>					
 				</section>
 
 			</section>
@@ -129,89 +129,91 @@ for (i <- 0 until fibs.length) {
 					<ul>
 						<li class="fragment">Case matching is more powerful in Scala</li>
 					</ul>
-<span class="fragment stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
-val odds = new ArrayList[Integer]()
-for (i <- 0 until fibs.length) {
-  val cur = fibs(i)
-  if (cur % 2 == 0) evens.add(cur)
-  else odds.add(cur)
-}</code></pre></span>					
-<span class="fragment stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
-val odds = new ArrayList[Integer]()
-for (cur <- fibs) {
-  (cur % 2) match {
-    case 0 => evens.add(cur)
-    case _ => odds.add(cur)
-  }
-}</code></pre></span>					
-				</section>
-				<section>
-					<h2>Immutable Collections</h2>
-<span class=" stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
-val odds = new ArrayList[Integer]()
-for (cur <- fibs) {
-  (cur % 2) match {
-    case 0 => evens.add(cur)
-    case _ => odds.add(cur)
-  }
-}</code></pre></span>	
-<span class="fragment stretch"><pre><code class=" scala">var evens = Seq[Int]()
-var odds = Seq[Int]()
-for (cur <- fibs) {
-  (cur % 2) match {
-    case 0 => evens = evens :+ cur
-    case _ => odds = odds :+ cur
-  }
-}</code></pre></span>					
-				</section>		
-				<section>
-					<h2>Functional Way - FoldLeft</h2>
-<span class=" stretch"><pre><code class=" scala">var evens = Seq[Int]()
-var odds = Seq[Int]()
-for (cur <- fibs) {
-  (cur % 2) match {
-    case 0 => evens = evens :+ cur
-    case _ => odds = odds :+ cur
-  }
-}</code></pre></span>					
-<span class="fragment stretch"><pre><code class=" scala">val initial = (Seq[Int](), Seq[Int]())
-
-val (evens, odds) = fibs.foldLeft(initial) { (total, cur) =>
-
-  val evens = total._1
-  val odds = total._2
-
-  (cur % 2) match {
-    case 0 => (evens :+ cur, odds)
-    case _ => (evens, odds :+ cur)
-  }
-}</code></pre></span>	
-				</section>	
-				<section>
-					<h2>Start to Finish</h2>
-<span class=" stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
-val odds = new ArrayList[Integer]()
-for (i <- 0 until fibs.length) {
-  val cur = fibs(i)
-  if (cur % 2 == 0) evens.add(cur)
-  else odds.add(cur)
-}</code></pre></span>					
-<span class="fragment stretch"><pre><code class=" scala">val initial = (Seq[Int](), Seq[Int]())
-val (evens, odds) = fibs.foldLeft(initial) { (total, cur) =>
-  (cur % 2) match {
-    case 0 => (total._1 :+ cur, total._2)
-    case _ => (total._1, total._2 :+ cur)
-  }
-}</code></pre></span>	
-				</section>											
+					<span class="fragment stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
+						val odds = new ArrayList[Integer]()
+						for (i <- 0 until fibs.length) {
+						val cur = fibs(i)
+						if (cur % 2 == 0) evens.add(cur)
+						else odds.add(cur)
+					}</code></pre></span>					
+					<span class="fragment stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
+						val odds = new ArrayList[Integer]()
+						for (cur <- fibs) {
+						(cur % 2) match {
+						case 0 => evens.add(cur)
+						case _ => odds.add(cur)
+					}
+				}</code></pre></span>					
 			</section>
-		</div>
-	</div>
+			<section>
+				<h2>Immutable Collections</h2>
+				<span class=" stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
+					val odds = new ArrayList[Integer]()
+					for (cur <- fibs) {
+					(cur % 2) match {
+					case 0 => evens.add(cur)
+					case _ => odds.add(cur)
+				}
+			}</code></pre></span>	
+			<span class="fragment stretch"><pre><code class=" scala">var evens = Seq[Int]()
+				var odds = Seq[Int]()
+				for (cur <- fibs) {
+				(cur % 2) match {
+				case 0 => evens = evens :+ cur
+				case _ => odds = odds :+ cur
+			}
+		}</code></pre></span>					
+	</section>		
+	<section>
+		<h2>Functional Way - FoldLeft</h2>
+		<span class=" stretch"><pre><code class=" scala">var evens = Seq[Int]()
+			var odds = Seq[Int]()
+			for (cur <- fibs) {
+			(cur % 2) match {
+			case 0 => evens = evens :+ cur
+			case _ => odds = odds :+ cur
+		}
+	}</code></pre></span>					
+	<span class="fragment stretch"><pre><code class=" scala">val initial = (Seq[Int](), Seq[Int]())
 
-	<script src="reveal3/lib/js/head.min.js"></script>
-	<script src="reveal3/js/reveal.js"></script>
+		val (evens, odds) = fibs.foldLeft(initial) { (total, cur) =>
 
-	<script>
+		val evens = total._1
+		val odds = total._2
+
+		(cur % 2) match {
+		case 0 => (evens :+ cur, odds)
+		case _ => (evens, odds :+ cur)
+	}
+}</code></pre></span>	
+</section>	
+<section>
+	<h2>Start to Finish</h2>
+	<span class=" stretch"><pre><code class=" scala">val evens = new ArrayList[Integer]()
+		val odds = new ArrayList[Integer]()
+		for (i <- 0 until fibs.length) {
+		val cur = fibs(i)
+		if (cur % 2 == 0) evens.add(cur)
+		else odds.add(cur)
+	}</code></pre></span>					
+	<span class="fragment stretch"><pre><code class=" scala">val initial = (Seq[Int](), Seq[Int]())
+		val (evens, odds) = fibs.foldLeft(initial) { (total, cur) =>
+		(cur % 2) match {
+		case 0 => (total._1 :+ cur, total._2)
+		case _ => (total._1, total._2 :+ cur)
+	}
+}</code></pre></span>	
+</section>											
+</section>
+
+
+</div>
+</div>
+
+<script src="reveal3/lib/js/head.min.js"></script>
+<script src="reveal3/js/reveal.js"></script>
+
+<script>
 		// Full list of configuration options available at:
 		// https://github.com/hakimel/reveal.js#configuration
 		Reveal.initialize({
@@ -255,7 +257,7 @@ val (evens, odds) = fibs.foldLeft(initial) { (total, cur) =>
 				async : true
 			} ]
 		});
-	</script>
+		</script>
 
-</body>
-</html>
+	</body>
+	</html>
