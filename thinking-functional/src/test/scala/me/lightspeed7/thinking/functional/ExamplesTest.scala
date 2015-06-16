@@ -88,4 +88,13 @@ class ExamplesTest extends FunSuite {
     println(s"Odds(${odds.size})   - ${odds}")
   }
 
+  test("functional - builtin") {
+    val (evens, odds) = fibs.partition { x => x % 2 == 0 }
+
+    evens.size should be(10)
+    odds.size should be(19)
+    println(s"Evens(${evens.size}) - ${evens}")
+    println(s"Odds(${odds.size})   - ${odds}")
+  }
+
 }
